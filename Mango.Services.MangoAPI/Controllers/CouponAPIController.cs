@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Mango.Services.MangoAPI.Data;
+using Mango.Services.MangoAPI.Models;
 using Mango.Services.MangoAPI.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,79 @@ namespace Mango.Services.MangoAPI.Controllers
             try
             {
                 _response.Result = _mapper.Map<CouponDto>(_db.Coupons.First(a => a.CouponId == id));
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
+        [HttpGet("GetByCode/{code}")]
+        public ResponseDto GetByCode(string code)
+        {
+            try
+            {
+                _response.Result = _mapper.Map<CouponDto>(_db.Coupons.First(a => a.CouponCode.Equals(code.ToLower())));
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
+        [HttpPost]
+        public ResponseDto Post([FromBody] CouponDto couponDto)
+        {
+            try
+            {
+                var couponAdded = _db.Coupons.Add(_mapper.Map<Coupon>(couponDto));
+                _db.SaveChanges();
+
+                _response.Result = _mapper.Map<CouponDto>(couponAdded.Entity);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
+        [HttpPut]
+        public ResponseDto Put([FromBody] CouponDto couponDto)
+        {
+            try
+            {
+                var couponAdded = _db.Coupons.Update(_mapper.Map<Coupon>(couponDto));
+                _db.SaveChanges();
+
+                _response.Result = _mapper.Map<CouponDto>(couponAdded.Entity);
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.Message;
+            }
+
+            return _response;
+        }
+
+        [HttpDelete("{id:int}")]
+        public ResponseDto Delete(int id)
+        {
+            try
+            {
+                var coupon = _db.Coupons.First(c => c.CouponId == id);
+
+                _db.Coupons.Remove(coupon);
+                _db.SaveChanges();
             }
             catch (Exception ex)
             {
