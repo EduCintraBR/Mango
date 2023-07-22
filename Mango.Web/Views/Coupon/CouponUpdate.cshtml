@@ -1,0 +1,49 @@
+﻿@model CouponDto
+
+<form asp-action="CouponUpdate">
+    <br />
+    <div class="container border p-3">
+        <h1 class="text-white text-center">Editar Cupom</h1>
+
+        <input asp-for="CouponId" hidden />
+        <hr />
+        <div class="row">
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Código do Cupom</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="CouponCode" class="form-control" />
+                <span asp-validation-for="CouponCode" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Qtd. de desconto</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="DiscountAmount" class="form-control" />
+                <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Qtd. Mínima</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="MinAmount" class="form-control" />
+                <span asp-validation-for="MinAmount" class="text-danger"></span>
+            </div>
+
+            <div class="col-5 offset-2">
+                <a asp-action="CouponIndex" class="btn-primary btn form-control ">Voltar para Lista</a>
+            </div>
+            <div class="col-5">
+                <input type="submit" value="Salvar" class="btn btn-warning form-control" />
+            </div>
+
+        </div>
+
+        <div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

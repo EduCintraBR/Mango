@@ -57,7 +57,42 @@ namespace Mango.Web.Controllers
             return View(model);
         }
 
-		public async Task<IActionResult> CouponDelete(int couponId)
+        public async Task<IActionResult> CouponUpdate(int couponId)
+        {
+            ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
+
+            if (response != null && response.IsSuccess)
+            {
+                CouponDto? coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                return View(coupon);
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CouponUpdate(CouponDto dto)
+        {
+            ResponseDto? response = await _couponService.UpdateCouponAsync(dto);
+
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Cupom alterado com sucesso";
+                return RedirectToAction(nameof(CouponIndex));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return RedirectToAction(nameof(CouponIndex));
+        }
+
+        public async Task<IActionResult> CouponDelete(int couponId)
 		{
 			ResponseDto? response = await _couponService.GetCouponByIdAsync(couponId);
 
