@@ -3,7 +3,7 @@
 	<div class="card-header bg-secondary bg-gradient ml-0 py-3">
 		<div class="row">
 			<div class="col-12 text-center">
-				<h1 class="text-white">Coupons List</h1>
+				<h1 class="text-white">Lista de Cupons</h1>
 			</div>
 		</div>
 	</div>
@@ -12,21 +12,20 @@
 			<div class="col-6">
 			</div>
 			<div class="col-6 text-end">
-				<a class="btn btn-outline-primary"><i class="bi bi-plus-square"></i> Create New Coupon</a>
-
+				<a class="btn btn-outline-primary" asp-controller="Coupon" asp-action="CouponCreate"><i class="bi bi-plus-square"></i> Criar Novo Cupom</a>
 			</div>
 		</div>
 		<table class="table">
 			<thead>
 				<tr>
 					<th>
-						Coupon Code
+						Código do Cupom
 					</th>
 					<th>
-						Discount Amount
+						Quantidade de desconto
 					</th>
 					<th>
-						Minimum Amount
+						Quantidade Mínima
 					</th>
 					<th></th>
 				</tr>
@@ -36,16 +35,16 @@
 				{
 					<tr>
 						<td>
-							@coupon.CouponCode
+							@(coupon.CouponCode)
 						</td>
 						<td>
-							@coupon.DiscountAmount
+							@((coupon.DiscountAmount).ToString("c"))
 						</td>
 						<td>
-							@coupon.MinAmount
+							@((coupon.MinAmount).ToString("c"))
 						</td>
 						<td>
-							<a class="btn btn-danger">
+							<a asp-action="CouponDelete" asp-route-couponId="@coupon.CouponId" class="btn btn-danger">
 								<i class="bi bi-trash"></i>
 							</a>
 						</td>
