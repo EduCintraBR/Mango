@@ -1,0 +1,39 @@
+﻿@using Mango.Web.Models.Dto;
+@model RegistrationRequestDto
+
+<form method="post">
+    <div class="container border p-4">
+        <div class="row-text-center">
+            <h1>Registre-se</h1>
+        </div>
+        <div class="row text-danger">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="Email" type="email" class="form-control" placeholder="Email..." />
+                <span asp-validation-for="Email" class="text-danger" />
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="Name" type="text" class="form-control" placeholder="Nome..." />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="Celular..." />
+                <span asp-validation-for="PhoneNumber" class="text-danger" />
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="Password" type="password" class="form-control" placeholder="Senha..." />
+                <span asp-validation-for="Password" class="text-danger" />
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <select asp-for="RoleName" class="form-select" asp-items="@ViewBag.RoleList">
+                    <option disabled selected>--Selecione a Permissão--</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <button type="submit" class="form-control btn btn-success" value="Submit">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+</form>

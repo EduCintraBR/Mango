@@ -20,19 +20,31 @@ namespace Mango.Web.Service
             {
                  ApiType = ApiType.POST,
                  Data = registrationRequestDto,
-                 Url = $"{AuthAPIBase}/api/auth",
+                 Url = $"{AuthAPIBase}/api/auth/assign-role",
                  AccessToken = ""
             });
         }
 
-        public Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
+        public async Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.POST,
+                Data = loginRequestDto,
+                Url = $"{AuthAPIBase}/api/auth/login",
+                AccessToken = ""
+            });
         }
 
-        public Task<ResponseDto?> RegisterAsync(RegistrationRequestDto registrationRequestDto)
+        public async Task<ResponseDto?> RegisterAsync(RegistrationRequestDto registrationRequestDto)
         {
-            throw new NotImplementedException();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.POST,
+                Data = registrationRequestDto,
+                Url = $"{AuthAPIBase}/api/auth/register",
+                AccessToken = ""
+            });
         }
     }
 }
