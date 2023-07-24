@@ -2,13 +2,13 @@
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Mango.Services.CouponAPI
+namespace Mango.Services.CouponAPI.Extensions
 {
-    public class ConfiguringAuthentication
+    public static class WebApplicationBuilderExtensions
     {
-        public static void Configure (IServiceCollection services, ConfigurationManager config)
+        public static WebApplicationBuilder AddAppAuthentication(this WebApplicationBuilder builder)
         {
-            var apiSection = config.GetSection("ApiSettings");
+            var apiSection = builder.Configuration.GetSection("ApiSettings");
 
             var secret = apiSection.GetValue<string>("Secret");
             var issuer = apiSection.GetValue<string>("Issuer");
@@ -16,12 +16,12 @@ namespace Mango.Services.CouponAPI
 
             var key = Encoding.ASCII.GetBytes(secret);
 
-            services.AddAuthentication(opt =>
+            builder.Services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(opt =>
+            .AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -33,7 +33,8 @@ namespace Mango.Services.CouponAPI
                     ValidAudience = audience
                 };
             });
-            services.AddAuthorization();
+
+            return builder;
         }
     }
 }
