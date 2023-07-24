@@ -23,52 +23,40 @@
 						Nome
 					</th>
 					<th>
-						Username
+						Email
 					</th>
 					<th>
-						PhoneNumber
+						Num. Celular
 					</th>
 					<th></th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				@* @foreach (var coupon in Model)
+				@foreach (var user in Model)
 				{
 					<tr>
 						<td>
-							@(coupon.CouponCode)
+							@(user.Name)
 						</td>
 						<td>
-							@((coupon.DiscountAmount).ToString("c"))
+							@(user.Email)
 						</td>
 						<td>
-							@((coupon.MinAmount).ToString("c"))
+							@(user.PhoneNumber)
 						</td>
 						<td>
-							<a asp-action="CouponUpdate" asp-route-couponId="@coupon.CouponId" class="btn btn-warning">
+							<a asp-action="UserUpdate" asp-route-userId="@user.Id" class="btn btn-warning">
 								<i class="bi bi-pencil-fill"></i>
 							</a>
 						</td>
 						<td>
-							<a asp-action="CouponDelete" asp-route-couponId="@coupon.CouponId" class="btn btn-danger">
+							<a asp-action="UserDelete" asp-route-userId="@user.Id" class="btn btn-danger">
 								<i class="bi bi-trash"></i>
 							</a>
 						</td>
 					</tr>
-				} *@
-				<tr>
-					<td>
-					</td>
-					<td>
-					</td>
-					<td>
-					</td>
-					<td>
-					</td>
-					<td>
-					</td>
-				</tr>
+				}
 			</tbody>
 		</table>
 

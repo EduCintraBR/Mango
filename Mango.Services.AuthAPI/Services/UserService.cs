@@ -3,6 +3,7 @@ using Mango.Services.AuthAPI.Models;
 using Mango.Services.AuthAPI.Models.Dto;
 using Mango.Services.AuthAPI.Services.IService;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mango.Services.AuthAPI.Services
 {
@@ -17,6 +18,30 @@ namespace Mango.Services.AuthAPI.Services
             _db = database;
             _userManager = userManager;
             _authService = authService;
+        }
+
+        public async Task<UserDto> GetUserByIdAsync(Guid userId)
+        {
+            return await _db.ApplicationUsers.Select(x => new UserDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Email = x.Email,
+                PhoneNumber = x.PhoneNumber
+            })
+                .FirstOrDefaultAsync(u => u.Id.Equals(userId.ToString()));
+        }
+
+        public async Task<List<UserDto>> GetAllUsersAsync()
+        {
+            return await _db.ApplicationUsers.Select(x => new UserDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Email = x.Email,
+                PhoneNumber = x.PhoneNumber
+            })
+                .ToListAsync();
         }
 
         public async Task<bool> CreateUserAsync(CreateUserDto userDto)

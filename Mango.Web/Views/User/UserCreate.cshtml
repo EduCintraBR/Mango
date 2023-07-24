@@ -1,0 +1,56 @@
+﻿@using Mango.Web.Models.Dto;
+@model CreateUserDto
+
+<form asp-action="UserCreate">
+    <br />
+    <div class="container border p-4">
+        <h1 class="text-white text-center">Criar Usuário</h1>
+
+        <hr />
+        <div class="row">
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Nome</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Email</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Num. Celular</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Permissão</label>
+            </div>
+            <div class="col-10 pb-3">
+                <select asp-for="RoleName" class="form-select" asp-items="@ViewBag.RoleList">
+                    <option disabled selected>--Selecione a Permissão--</option>
+                </select>
+            </div>
+
+            <div class="col-5 offset-2">
+                <a asp-action="UserIndex" class="btn-primary btn form-control ">Voltar para Lista</a>
+            </div>
+            <div class="col-5">
+                <input type="submit" value="Salvar" class="btn btn-success form-control" />
+            </div>
+        </div>
+
+        <div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -16,6 +16,28 @@ namespace Mango.Web.Service
             _tokenProvider = tokenProvider;
         }
 
+        public async Task<ResponseDto?> GetAllUsersAsync()
+        {
+            var token = _tokenProvider.GetToken();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.GET,
+                Url = $"{AuthAPIBase}/api/user/all-users",
+                AccessToken = token
+            }, withBearer: false);
+        }
+
+        public async Task<ResponseDto?> GetUserByIdAsync(Guid id)
+        {
+            var token = _tokenProvider.GetToken();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.GET,
+                Url = $"{AuthAPIBase}/api/user/{id}",
+                AccessToken = token
+            }, withBearer: false);
+        }
+
         public async Task<ResponseDto?> RegisterAsync(CreateUserDto createUserDto)
         {
             var token = _tokenProvider.GetToken();

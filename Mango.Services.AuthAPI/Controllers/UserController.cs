@@ -9,7 +9,7 @@ namespace Mango.Services.AuthAPI.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -19,6 +19,40 @@ namespace Mango.Services.AuthAPI.Controllers
         {
             _userService = userService;
             _response = new ResponseDto();
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetById(Guid userId)
+        {
+            var result = await _userService.GetUserByIdAsync(userId);
+
+            if (result is null)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Failed to retrieve the user from database.";
+
+                return BadRequest(_response);
+            }
+
+            _response.Result = result;
+            return Ok(_response);
+        }
+
+        [HttpGet("all-users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await _userService.GetAllUsersAsync();
+
+            if (!result.Any())
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Failed to retrieve users from database.";
+
+                return BadRequest(_response);
+            }
+
+            _response.Result = result;
+            return Ok(_response);
         }
 
         [HttpPost("create")]
