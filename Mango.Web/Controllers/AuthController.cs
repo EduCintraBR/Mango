@@ -48,7 +48,7 @@ namespace Mango.Web.Controllers
             }
             else
             {
-                ModelState.AddModelError("CustomError", response.Message);
+                TempData["error"] = response.Message;
                 return View(obj);
             }
         }
@@ -87,6 +87,10 @@ namespace Mango.Web.Controllers
                     return RedirectToAction(nameof(Login));
                 }
             }
+            else
+            {
+                TempData["error"] = response.Message;
+            }
 
             var roleList = new List<SelectListItem>()
             {
@@ -100,9 +104,14 @@ namespace Mango.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+            _tokenProvider.ClearToken();
+            
+            TempData["success"] = "Logout feito com sucesso!";
+
+            return RedirectToAction("Index", "Home");
         }
 
         private async Task SignInUser(LoginResponseDto model)
@@ -116,12 +125,13 @@ namespace Mango.Web.Controllers
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub, jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub).Value));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name, jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name).Value));
             identity.AddClaim(new Claim(ClaimTypes.Name, jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(c => c.Type == "role").Value));
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
         }
 
-        public IActionResult AssignToRole()
+        public IActionResult AccessDenied()
         {
             return View();
         }

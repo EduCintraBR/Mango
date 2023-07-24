@@ -1,12 +1,13 @@
 ﻿using Mango.Web.Models;
 using Mango.Web.Service.IService;
+using Mango.Web.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace Mango.Web.Controllers
 {
+    [Authorize(Roles = SD.RoleAdmin)]
     public class CouponController : Controller
     {
         private readonly ICouponService _couponService;
