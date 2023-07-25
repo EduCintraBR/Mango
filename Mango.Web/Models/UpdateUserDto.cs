@@ -2,7 +2,7 @@
 
 namespace Mango.Web.Models.Dto
 {
-    public class CreateUserDto
+    public class UpdateUserDto
     {
         [Key]
         public Guid? Id { get; set; }
@@ -12,9 +12,5 @@ namespace Mango.Web.Models.Dto
         public string Name { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
-        [Required]
-        public string Password { get; set; }
-        [Required]
-        public string RoleName { get; set; }
     }
 }

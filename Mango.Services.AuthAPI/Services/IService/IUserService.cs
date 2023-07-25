@@ -7,8 +7,8 @@ namespace Mango.Services.AuthAPI.Services.IService
     {
         Task<List<UserDto>> GetAllUsersAsync();
         Task<UserDto> GetUserByIdAsync(Guid userId);
-        Task<bool> CreateUserAsync(CreateUserDto userDto);
-        Task<bool> UpdateUser(ApplicationUser user);
-        Task<bool> DeleteUser(ApplicationUser user);
+        Task<bool> CreateUserAsync(CreateUserDto createUserDto);
+        Task<bool> UpdateUserAsync(UpdateUserDto updateUserDto);
+        Task<bool> DeleteUserAsync(Guid userId);
     }
 }

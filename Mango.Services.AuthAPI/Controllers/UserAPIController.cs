@@ -10,12 +10,12 @@ namespace Mango.Services.AuthAPI.Controllers
     [Route("api/user")]
     [ApiController]
     //[Authorize(Roles = "ADMIN")]
-    public class UserController : ControllerBase
+    public class UserAPIController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly ResponseDto _response;
 
-        public UserController(IUserService userService)
+        public UserAPIController(IUserService userService)
         {
             _userService = userService;
             _response = new ResponseDto();
@@ -64,6 +64,38 @@ namespace Mango.Services.AuthAPI.Controllers
             {
                 _response.IsSuccess = false;
                 _response.Message = "Failed to create an user.";
+
+                return BadRequest(_response);
+            }
+
+            return Ok(_response);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser(UpdateUserDto userDto)
+        {
+            var result = await _userService.UpdateUserAsync(userDto);
+
+            if (!result)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Failed to create an user.";
+
+                return BadRequest(_response);
+            }
+
+            return Ok(_response);
+        }
+
+        [HttpDelete("delete/{userId}")]
+        public async Task<IActionResult> DeleteUser(Guid userId)
+        {
+            var result = await _userService.DeleteUserAsync(userId);
+
+            if (!result)
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Failed to delete an user.";
 
                 return BadRequest(_response);
             }

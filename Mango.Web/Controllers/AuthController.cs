@@ -56,14 +56,6 @@ namespace Mango.Web.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var roleList = new List<SelectListItem>()
-            {
-                new SelectListItem{ Text = SD.RoleAdmin, Value = SD.RoleAdmin },
-                new SelectListItem{ Text = SD.RoleCustomer, Value = SD.RoleCustomer },
-            };
-
-            ViewBag.RoleList = roleList;
-
             return View();
         }
 
@@ -91,14 +83,6 @@ namespace Mango.Web.Controllers
             {
                 TempData["error"] = response.Message;
             }
-
-            var roleList = new List<SelectListItem>()
-            {
-                new SelectListItem{ Text = SD.RoleAdmin, Value = SD.RoleAdmin },
-                new SelectListItem{ Text = SD.RoleCustomer, Value = SD.RoleCustomer },
-            };
-
-            ViewBag.RoleList = roleList;
 
             return View(obj);
         }

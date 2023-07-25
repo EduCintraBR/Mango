@@ -44,25 +44,25 @@ namespace Mango.Services.AuthAPI.Services
                 .ToListAsync();
         }
 
-        public async Task<bool> CreateUserAsync(CreateUserDto userDto)
+        public async Task<bool> CreateUserAsync(CreateUserDto createUserDto)
         {
             ApplicationUser user = new()
             {
-                UserName = userDto.Email,
-                Email = userDto.Email,
-                NormalizedEmail = userDto.Email.ToUpper(),
-                Name = userDto.Name,
-                PhoneNumber = userDto.PhoneNumber
+                UserName = createUserDto.Email,
+                Email = createUserDto.Email,
+                NormalizedEmail = createUserDto.Email.ToUpper(),
+                Name = createUserDto.Name,
+                PhoneNumber = createUserDto.PhoneNumber
             };
 
-            var userAdded = await _userManager.CreateAsync(user, userDto.Password);
+            var userAdded = await _userManager.CreateAsync(user, createUserDto.Password);
             
             if (userAdded != null && userAdded.Succeeded)
             {
                 var userFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.Equals(user.UserName));
                 if (userFromDb != null)
                 {
-                    var roleAssigned = await _authService.AssignRole(userFromDb.UserName, userDto.RoleName);
+                    var roleAssigned = await _authService.AssignRole(userFromDb.UserName, createUserDto.RoleName);
                     
                     if (roleAssigned) return true;
                 }
@@ -71,14 +71,35 @@ namespace Mango.Services.AuthAPI.Services
             return false;
         }
 
-        public Task<bool> DeleteUser(ApplicationUser user)
+        public async Task<bool> DeleteUserAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var userFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id.Equals(userId.ToString()));
+            if (userFromDb != null)
+            {
+                _db.ApplicationUsers.Remove(userFromDb);
+                await _db.SaveChangesAsync();
+                
+                return true;
+            }
+            return false;
         }
 
-        public Task<bool> UpdateUser(ApplicationUser user)
+        public async Task<bool> UpdateUserAsync(UpdateUserDto updateUserDto)
         {
-            throw new NotImplementedException();
+            var userFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id.Equals(updateUserDto.Id.ToString()));
+            if (userFromDb != null)
+            {
+                userFromDb.Name = updateUserDto.Name;
+                userFromDb.UserName = updateUserDto.Email;
+                userFromDb.Email = updateUserDto.Email;
+                userFromDb.PhoneNumber = updateUserDto.PhoneNumber;
+
+                _db.ApplicationUsers.Update(userFromDb);
+                await _db.SaveChangesAsync();
+
+                return true;
+            }
+            return false;
         }
     }
 }

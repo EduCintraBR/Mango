@@ -27,18 +27,18 @@ namespace Mango.Web.Service
             }, withBearer: false);
         }
 
-        public async Task<ResponseDto?> GetUserByIdAsync(Guid id)
+        public async Task<ResponseDto?> GetUserByIdAsync(Guid userId)
         {
             var token = _tokenProvider.GetToken();
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.GET,
-                Url = $"{AuthAPIBase}/api/user/{id}",
+                Url = $"{AuthAPIBase}/api/user/{userId}",
                 AccessToken = token
             }, withBearer: false);
         }
 
-        public async Task<ResponseDto?> RegisterAsync(CreateUserDto createUserDto)
+        public async Task<ResponseDto?> CreateUserAsync(CreateUserDto createUserDto)
         {
             var token = _tokenProvider.GetToken();
             return await _baseService.SendAsync(new RequestDto()
@@ -46,6 +46,29 @@ namespace Mango.Web.Service
                 ApiType = ApiType.POST,
                 Data = createUserDto,
                 Url = $"{AuthAPIBase}/api/user/create",
+                AccessToken = token
+            }, withBearer: false);
+        }
+
+        public async Task<ResponseDto?> DeleteUserAsync(Guid userId)
+        {
+            var token = _tokenProvider.GetToken();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.DELETE,
+                Url = $"{AuthAPIBase}/api/user/delete/{userId}",
+                AccessToken = token
+            }, withBearer: false);
+        }
+
+        public async Task<ResponseDto?> UpdateUserAsync(UpdateUserDto createUserDto)
+        {
+            var token = _tokenProvider.GetToken();
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.PUT,
+                Data = createUserDto,
+                Url = $"{AuthAPIBase}/api/user/update",
                 AccessToken = token
             }, withBearer: false);
         }

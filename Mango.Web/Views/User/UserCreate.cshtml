@@ -3,7 +3,7 @@
 
 <form asp-action="UserCreate">
     <br />
-    <div class="container border p-4">
+    <div class="container col-10 border p-4">
         <h1 class="text-white text-center">Criar Usuário</h1>
 
         <hr />
@@ -21,6 +21,13 @@
             <div class="col-10 pb-3">
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <label class="control-label pt-2" style="font-size:20px;">Senha</label>
+            </div>
+            <div class="col-10 pb-3">
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger" />
             </div>
             <div class="col-2">
                 <label class="control-label pt-2" style="font-size:20px;">Num. Celular</label>
@@ -44,9 +51,6 @@
             <div class="col-5">
                 <input type="submit" value="Salvar" class="btn btn-success form-control" />
             </div>
-        </div>
-
-        <div>
         </div>
     </div>
 </form>
