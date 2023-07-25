@@ -69,8 +69,6 @@ namespace Mango.Web.Service
                         return new() { IsSuccess = false, Message = "Access Denied" };
                     case HttpStatusCode.InternalServerError:
                         return new() { IsSuccess = false, Message = "Internal Server Error" };
-                    case HttpStatusCode.BadRequest:
-                        return new() { IsSuccess = false, Message = "Bad Request" };
                     default:
                         var apiContent = await apiResponse.Content.ReadAsStringAsync();
                         var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);

@@ -16,6 +16,7 @@ builder.Services.AddHttpClient<IAuthService, AuthService>();
 //Injecting the dependencies
 DependencyInjectionConfig.ConfigureAll(builder.Services);
 
+SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
 

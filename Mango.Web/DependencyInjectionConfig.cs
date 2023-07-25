@@ -8,6 +8,7 @@ namespace Mango.Web
         public static void ConfigureAll(IServiceCollection services)
         {
             services.AddScoped<IBaseService, BaseService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICouponService, CouponService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenProvider, TokenProvider>();
