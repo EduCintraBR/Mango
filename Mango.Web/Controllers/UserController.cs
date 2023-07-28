@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Mango.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "ADMIN")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

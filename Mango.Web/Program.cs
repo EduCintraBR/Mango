@@ -12,6 +12,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<ICouponService, CouponService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
+builder.Services.AddHttpClient<ICartService, CartService>();
 
 //Injecting the dependencies
 DependencyInjectionConfig.ConfigureAll(builder.Services);
@@ -19,6 +20,7 @@ DependencyInjectionConfig.ConfigureAll(builder.Services);
 SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 SD.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 SD.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
+SD.ShoppingCartAPIBase = builder.Configuration["ServiceUrls:ShoppingCartAPI"];
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

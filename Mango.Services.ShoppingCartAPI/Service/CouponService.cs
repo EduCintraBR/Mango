@@ -17,12 +17,6 @@ namespace Mango.Services.ShoppingCartAPI.Service
         {
             var client = _httpClientFactory.CreateClient("Coupon");
 
-            HttpRequestMessage message = new();
-            message.Headers.Add("Accept", "application/json");
-
-            var token = _tokenProvider.GetToken();
-            message.Headers.Add("Authorization", $"Bearer {token}");
-
             var apiResponse = await client.GetAsync($"/api/coupon/GetByCode/{couponCode}");
             var apiContent = await apiResponse.Content.ReadAsStringAsync();
             var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(Convert.ToString(apiContent));

@@ -9,7 +9,7 @@ namespace Mango.Services.AuthAPI.Controllers
 {
     [Route("api/user")]
     [ApiController]
-    //[Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     public class UserAPIController : ControllerBase
     {
         private readonly IUserService _userService;

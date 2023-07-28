@@ -1,4 +1,5 @@
 using Mango.Services.AuthAPI.Data;
+using Mango.Services.AuthAPI.Extensions;
 using Mango.Services.AuthAPI.Models;
 using Mango.Services.AuthAPI.Services;
 using Mango.Services.AuthAPI.Services.IService;
@@ -24,6 +25,9 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.AddAppAuthentication();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

@@ -13,6 +13,7 @@ namespace Mango.Web
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenProvider, TokenProvider>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICartService, CartService>();
         }
     }
 }

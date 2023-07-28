@@ -110,7 +110,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
             return _response;
         }
 
-        [HttpPost("insertCoupon")]
+        [HttpPost("applyCoupon")]
         public async Task<ResponseDto> InsertCoupon([FromBody] CartDto cartDto)
         {
             try
