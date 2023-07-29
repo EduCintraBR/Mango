@@ -9,7 +9,6 @@ namespace Mango.Services.CouponAPI.Controllers
 {
     [Route("api/coupon")]
     [ApiController]
-    [Authorize(Roles = "ADMIN")]
     public class CouponAPIController : ControllerBase
     {
         private readonly AppDbContext _db;
@@ -23,6 +22,7 @@ namespace Mango.Services.CouponAPI.Controllers
             _response = new ResponseDto();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         public ResponseDto Get()
         {
@@ -39,6 +39,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("{id:int}")]
         public ResponseDto Get(int id)
         {
@@ -60,7 +61,9 @@ namespace Mango.Services.CouponAPI.Controllers
         {
             try
             {
-                _response.Result = _mapper.Map<CouponDto>(_db.Coupons.First(a => a.CouponCode.Equals(code.ToLower())));
+                var couponFromDb = _db.Coupons.FirstOrDefault(a => a.CouponCode.Equals(code.ToLower()));
+
+                _response.Result = _mapper.Map<CouponDto>(couponFromDb);
             }
             catch (Exception ex)
             {
@@ -71,6 +74,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public ResponseDto Post([FromBody] CouponDto couponDto)
         {
@@ -90,6 +94,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPut]
         public ResponseDto Put([FromBody] CouponDto couponDto)
         {
@@ -109,6 +114,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id:int}")]
         public ResponseDto Delete(int id)
         {

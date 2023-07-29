@@ -1,0 +1,104 @@
+﻿@using Mango.Web.Models.Dto;
+@model CartDto
+
+<form method="post">
+    <br />
+    <input asp-for="CartHeader.CartHeaderId" hidden />
+    <input asp-for="CartHeader.UserId" hidden />
+
+    <div class="">
+        <div class="card border mt-4 container">
+            <div class="card-header bg-dark text-light ml-0 row ">
+                <div class="col-6">
+                    <h3 class="text-success"><i class="bi bi-cart"></i> &nbsp; Carrinho de Compras</h3>
+                </div>
+                <div class="col-6 text-end">
+                    <a asp-action="HomeIndex" class="btn btn-outline-warning mt-2 btn-sm">Continue Comprando</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class=" d-none d-lg-block">
+                    <div class="row text-info">
+                        <div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-5">
+                            Detalhes do Produto
+                        </div>
+                        <div class="col-lg-2">
+                            Preço
+                        </div>
+                        <div class="col-lg-2">
+                            Quantidade
+                        </div>
+                        <div class="col-lg-1">
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                @if(Model.CartDetails.Any())
+                {
+                    @foreach (var prods in Model.CartDetails)
+                    {
+                        <div class="row h-100">
+                            <div class="col-4 col-md-2 text-center py-2">
+                                <img src="@prods.Product.ImageUrl" class="rounded" width="100%" />
+                            </div>
+                            <div class="col-8 col-md-5">
+                                <h5>@prods.Product.Name</h5>
+                                <div style="font-size:11px;">@Html.Raw(prods.Product.Description)</div>
+                            </div>
+                            <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                <span style="font-size:17px;">@string.Format("{0:c}", prods.Product.Price)</span>
+                            </div>
+                            <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
+                                <span style="font-size:17px;">@prods.Count</span>
+                            </div>
+                            <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
+                                <a asp-action="RemoveCart" asp-route-cartDetailsId="@prods.CartDetailsId" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <h2 class="text-center">Nenhum produto adicionado</h2>
+                }
+                <hr />
+                <div class="row">
+                    <div class="col-6">
+                        @if(string.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                        {
+                            <span>Coupon:</span>
+                            <input asp-for="CartHeader.CouponCode" />
+                            <button asp-action="ApplyCouponCode" type="submit" class="btn btn-sm btn-success"> Aplicar </button>
+                        }
+                        else
+                        {
+                            <span>Coupon:</span>
+                            <input asp-for="CartHeader.CouponCode" disabled/>
+                            <button asp-action="RemoveCouponCode" type="submit" class="btn btn-sm btn-success"> Remover </button>
+                        }
+
+                    </div>
+                    <div class="col-6 text-end">
+                        <span class="text-danger" style="font-size:21px;">  Total da compra : @((Model.CartHeader.CartTotal).ToString("c")) <br /></span>
+                        @if(Model.CartHeader.Discount > 0)
+                        {
+                            <span class="text-success"> Desconto da Compra :  @string.Format("{0:c}", Model.CartHeader.Discount)</span>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer row">
+                <div class="col-6 col-md-3 ">
+                    <button type="submit" class="btn btn-outline-danger form-control">Salvar Carrinho</button>
+                </div>
+                <div class="col-6 col-md-3 offset-md-6">
+                    <button disabled class="btn btn-success form-control">Checkout (Em desenvolvimento)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
