@@ -56,6 +56,7 @@ namespace Mango.Services.CouponAPI.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpGet("GetByCode/{code}")]
         public ResponseDto GetByCode(string code)
         {

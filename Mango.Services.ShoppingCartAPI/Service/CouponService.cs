@@ -7,12 +7,10 @@ namespace Mango.Services.ShoppingCartAPI.Service
     public class CouponService : ICouponService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ITokenProvider _tokenProvider;
 
-        public CouponService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
+        public CouponService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-            _tokenProvider = tokenProvider;
         }
 
         public async Task<CouponDto?> GetCoupon(string couponCode)

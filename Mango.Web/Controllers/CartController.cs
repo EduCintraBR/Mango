@@ -35,7 +35,11 @@ namespace Mango.Web.Controllers
             }
             else
             {
-                return new CartDto();
+                return new CartDto()
+                {
+                    CartHeader = new CartHeaderDto(),
+                    CartDetails = new List<CartDetailsDto>()
+                };
             }
         }
 
