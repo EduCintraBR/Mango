@@ -2,7 +2,7 @@
 @model CartDto
 
 @if(Model.CartDetails.Any()) {
-    <form method="post">
+    <form method="post" asp-action="EmailCart">
         <br />
         <input asp-for="CartHeader.CartHeaderId" hidden />
         <input asp-for="CartHeader.UserId" hidden />
@@ -86,7 +86,7 @@
                 </div>
                 <div class="card-footer row">
                     <div class="col-6 col-md-3 ">
-                        <button type="submit" class="btn btn-outline-danger form-control">Salvar Carrinho</button>
+                        <button type="submit" class="btn btn-outline-danger form-control">Enviar Carrinho por Email</button>
                     </div>
                     <div class="col-6 col-md-3 offset-md-6">
                         <button disabled class="btn btn-success form-control">Checkout (Em desenvolvimento)</button>

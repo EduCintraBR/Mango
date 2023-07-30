@@ -8,6 +8,7 @@ using Mango.Services.ShoppingCartAPI;
 using Mango.Services.ShoppingCartAPI.Service.IService;
 using Mango.Services.ShoppingCartAPI.Service;
 using Mango.Services.ShoppingCartAPI.Utility;
+using Mango.MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +21,11 @@ IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 //Configuring HTTP Client
 builder.Services.AddHttpClient("Product", c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();

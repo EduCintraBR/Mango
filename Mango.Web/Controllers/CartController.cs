@@ -61,6 +61,26 @@ namespace Mango.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> EmailCart(CartDto cartDto)
+        {
+            CartDto cart = await LoadCartDtoBasedOnLoggedUser();
+            cart.CartHeader.Email = GetUserEmailLogged();
+
+            ResponseDto apiResponse = await _cartService.EmailCart(cart);
+
+            if (apiResponse != null && apiResponse.IsSuccess)
+            {
+                TempData["success"] = "Email será processado e enviado em breve!";
+                return RedirectToAction(nameof(CartIndex));
+            }
+            else
+            {
+                TempData["error"] = apiResponse?.Message;
+                return RedirectToAction(nameof(CartIndex));
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> RemoveCouponCode(CartDto cartDto)
         {
             if (cartDto != null)
@@ -95,6 +115,11 @@ namespace Mango.Web.Controllers
         private string GetUserIdLogged()
         {
             return User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
+        }
+
+        private string GetUserEmailLogged()
+        {
+            return User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email)?.FirstOrDefault()?.Value;
         }
     }
 }
