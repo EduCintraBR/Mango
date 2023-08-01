@@ -6,7 +6,7 @@ namespace Mango.MessageBus
 {
     public class MessageBus : IMessageBus
     {
-        private string connectionString = "Endpoint=sb://cintrashopweb.servicebus.windows.net/;SharedAccessKeyName=DefaultPolicy;SharedAccessKey=cWsZOKRKCnTBST243l2uqssYb0lELE2Xw+ASbELFj7M=;EntityPath=emailshoppingcart";
+        private string connectionString = "Endpoint=sb://cintrashopweb.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=RXpSqpoHjBMU+8g3UAmCEJFNxkWNsICys+ASbBuiL+A=";
 
         public async Task PublishMessage(object message, string topic_queue_name)
         {
