@@ -1,7 +1,9 @@
-﻿using Mango.Services.EmailAPI.Data;
+﻿using MailKit.Net.Smtp;
+using Mango.Services.EmailAPI.Data;
 using Mango.Services.EmailAPI.Models;
 using Mango.Services.EmailAPI.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using System.Text;
 
 namespace Mango.Services.EmailAPI.Services
@@ -31,19 +33,42 @@ namespace Mango.Services.EmailAPI.Services
             }
             message.Append("</ul>");
 
-            await LogAndEmail(message.ToString(), cartDto.CartHeader.Email);
+            await LogAndEmail(message.ToString(), cartDto.CartHeader.Email, "Seu carrinho de compras salvo");
         }
 
         public async Task RegisterUserEmailAndLog(string email)
         {
             string message = $"Usuário Registrado com Sucesso <br/> Email: {email}";
-            await LogAndEmail(message, "appscintra@gmail.com");
+            await LogAndEmail(message, "appscintra@gmail.com", "Uma nova conta foi cadastrada!");
         }
 
-        private async Task<bool> LogAndEmail(string message, string email)
+        public void SendEmail(string toAddress, string subject, string body)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("CintraShop", "appscintra@gmail.com"));
+            message.To.Add(new MailboxAddress("", toAddress));
+            message.Subject = subject;
+
+            message.Body = new TextPart("plain")
+            {
+                Text = body
+            };
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("appscintra", "$(educin258852)");
+                client.Send(message);
+                client.Disconnect(true);
+            }
+        }
+
+        private async Task<bool> LogAndEmail(string message, string email, string? subject)
         {
             try
             {
+                //SendEmail(email, subject, message);
+
                 EmailLogger emailLog = new() { Message = message, Email = email , EmailSent = DateTime.Now };
                 
                 await using var _db = new AppDbContext(_dbOptions);
