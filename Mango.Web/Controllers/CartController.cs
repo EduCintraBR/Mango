@@ -58,6 +58,11 @@ namespace Mango.Web.Controllers
             return View(cart);
         }
 
+        public async Task<IActionResult> Confirmation(int orderId)
+        {
+            return View(orderId);
+        }
+
         private async Task<CartDto?> LoadCartDtoBasedOnLoggedUser()
         {
             var userId = GetUserIdLogged();

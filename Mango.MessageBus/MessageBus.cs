@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mango.MessageBus
 {
-    public class MessageBus : IMessageBus
+    public class AzureMessageBus : IAzureMessageBus
     {
         private string connectionString = "Endpoint=sb://cintrashopweb.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=RXpSqpoHjBMU+8g3UAmCEJFNxkWNsICys+ASbBuiL+A=";
 

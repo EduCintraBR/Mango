@@ -11,11 +11,11 @@ namespace Mango.Services.AuthAPI.Controllers
     public class AuthAPIController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IMessageBus _messageBus;
+        private readonly IAzureMessageBus _messageBus;
         private readonly IConfiguration _configuration;
         protected ResponseDto _response;
 
-        public AuthAPIController(IAuthService authService, IMessageBus messageBus, IConfiguration configuration)
+        public AuthAPIController(IAuthService authService, IAzureMessageBus messageBus, IConfiguration configuration)
         {
             _authService = authService;
             _messageBus = messageBus;

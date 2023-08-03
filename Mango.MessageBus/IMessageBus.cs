@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mango.MessageBus
 {
-    public interface IMessageBus
+    public interface IAzureMessageBus
     {
         Task PublishMessage(object message, string topic_queue_name);
     }

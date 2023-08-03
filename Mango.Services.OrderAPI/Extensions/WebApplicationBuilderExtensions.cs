@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Mango.MessageBus;
+using Mango.Services.OrderAPI.Service;
+using Mango.Services.OrderAPI.Service.IService;
+using Mango.Services.OrderAPI.Utility;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -33,6 +37,16 @@ namespace Mango.Services.OrderAPI.Extensions
                     ValidAudience = audience
                 };
             });
+
+            return builder;
+        }
+
+        public static WebApplicationBuilder InjectDependencies(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
 
             return builder;
         }

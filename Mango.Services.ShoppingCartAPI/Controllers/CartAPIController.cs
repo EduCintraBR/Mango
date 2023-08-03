@@ -21,12 +21,12 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         private readonly ResponseDto _response;
         private readonly IProductService _productService;
         private readonly ICouponService _couponService;
-        private readonly IMessageBus _messageBus;
+        private readonly IAzureMessageBus _messageBus;
         private readonly IConfiguration _configuration;
 
         public CartAPIController(AppDbContext dbContext, IMapper mapper, 
             IProductService productService, ICouponService couponService,
-            IMessageBus messageBus, IConfiguration configuration)
+            IAzureMessageBus messageBus, IConfiguration configuration)
         {
             _db = dbContext;
             _mapper = mapper;
