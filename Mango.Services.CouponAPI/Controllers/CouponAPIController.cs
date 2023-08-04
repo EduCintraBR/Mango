@@ -4,6 +4,7 @@ using Mango.Services.CouponAPI.Models;
 using Mango.Services.CouponAPI.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Mango.Services.CouponAPI.Controllers
@@ -85,14 +86,12 @@ namespace Mango.Services.CouponAPI.Controllers
                 var couponAdded = _db.Coupons.Add(_mapper.Map<Coupon>(couponDto));
                 _db.SaveChanges();
 
-                Stripe.StripeConfiguration.ApiKey = "sk_test_51NaN35DcqWkCvyrCmtMGzwYQ7JqDc6tJkyR0Tkf2KdhTmD0axnu8qbRnOmmgxDKqgHze3VcrMBXjPYvyvvVNJ3Q000ANPgGgt5";
-
                 var options = new Stripe.CouponCreateOptions
                 {
-                    AmountOff = (long)(couponDto.DiscountAmount * 100),
+                    Id = couponDto.CouponCode,
                     Name = couponDto.CouponCode,
-                    Currency = "brl",
-                    Id = couponDto.CouponCode
+                    AmountOff = (long)(couponDto.DiscountAmount * 100),
+                    Currency = "brl"
                 };
                 var service = new Stripe.CouponService();
                 service.Create(options);
@@ -114,8 +113,17 @@ namespace Mango.Services.CouponAPI.Controllers
         {
             try
             {
+                var oldCoupon = _db.Coupons.AsNoTracking().First(c => c.CouponId == couponDto.CouponId);
+
                 var couponAdded = _db.Coupons.Update(_mapper.Map<Coupon>(couponDto));
                 _db.SaveChanges();
+
+                var options = new Stripe.CouponUpdateOptions
+                {
+                    Name = couponDto.CouponCode
+                };
+                var service = new Stripe.CouponService();
+                service.Update(oldCoupon.CouponCode, options);
 
                 _response.Result = _mapper.Map<CouponDto>(couponAdded.Entity);
             }
