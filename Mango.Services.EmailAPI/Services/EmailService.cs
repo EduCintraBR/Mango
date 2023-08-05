@@ -1,15 +1,20 @@
-﻿using MailKit.Net.Smtp;
-using Mango.Services.EmailAPI.Data;
+﻿using Mango.Services.EmailAPI.Data;
 using Mango.Services.EmailAPI.Models;
 using Mango.Services.EmailAPI.Models.Dto;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 
 namespace Mango.Services.EmailAPI.Services
 {
     public class EmailService : IEmailService
     {
+        private const string MailSender = "appscintra@gmail.com";
+        private const string PasswordMail = "$(educin258852)";
+        private const string SmtpAddress = "smtp.gmail.com";
+        private const int PortNumber = 587;
+
         private DbContextOptions<AppDbContext> _dbOptions;
         public EmailService(DbContextOptions<AppDbContext> dbOptions)
         {
@@ -39,27 +44,31 @@ namespace Mango.Services.EmailAPI.Services
         public async Task RegisterUserEmailAndLog(string email)
         {
             string message = $"Usuário Registrado com Sucesso <br/> Email: {email}";
-            await LogAndEmail(message, "appscintra@gmail.com", "Uma nova conta foi cadastrada!");
+            string subject = "Uma nova conta foi cadastrada!";
+
+            SendEmail(email, subject, message);
+            await LogAndEmail(message, MailSender, subject);
         }
 
         public void SendEmail(string toAddress, string subject, string body)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("CintraShop", "appscintra@gmail.com"));
-            message.To.Add(new MailboxAddress("", toAddress));
-            message.Subject = subject;
-
-            message.Body = new TextPart("plain")
+            using(MailMessage  mailMessage = new MailMessage())
             {
-                Text = body
-            };
+                mailMessage.Sender = new MailAddress(MailSender);
+                mailMessage.From = new MailAddress(MailSender);
+                mailMessage.To.Add(new MailAddress(toAddress));
+                mailMessage.Subject = subject;
+                mailMessage.Body = body;
+                mailMessage.IsBodyHtml = true;
 
-            using (var client = new SmtpClient())
-            {
-                client.Connect("smtp.gmail.com", 587, false);
-                client.Authenticate("appscintra", "$(educin258852)");
-                client.Send(message);
-                client.Disconnect(true);
+                using (SmtpClient smtp = new SmtpClient(SmtpAddress, PortNumber))
+                {
+                    smtp.EnableSsl = true;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(MailSender, PasswordMail);
+
+                    smtp.Send(mailMessage);
+                }
             }
         }
 
@@ -67,8 +76,6 @@ namespace Mango.Services.EmailAPI.Services
         {
             try
             {
-                //SendEmail(email, subject, message);
-
                 EmailLogger emailLog = new() { Message = message, Email = email , EmailSent = DateTime.Now };
                 
                 await using var _db = new AppDbContext(_dbOptions);

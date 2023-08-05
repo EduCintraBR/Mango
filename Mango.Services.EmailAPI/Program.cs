@@ -16,6 +16,7 @@ optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("EmailDBCon
 
 builder.Services.AddSingleton(new EmailService(optionBuilder.Options));
 builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

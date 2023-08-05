@@ -88,8 +88,8 @@ namespace Mango.Services.CouponAPI.Controllers
 
                 var options = new Stripe.CouponCreateOptions
                 {
-                    Id = couponDto.CouponCode,
-                    Name = couponDto.CouponCode,
+                    Id = couponDto.CouponCode.ToUpper(),
+                    Name = couponDto.CouponCode.ToUpper(),
                     AmountOff = (long)(couponDto.DiscountAmount * 100),
                     Currency = "brl"
                 };

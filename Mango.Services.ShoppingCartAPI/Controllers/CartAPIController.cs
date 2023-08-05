@@ -139,7 +139,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                     }
                 }
                 var cartFromDb = await _db.CartHeaders.FirstAsync(a => a.CartHeaderId == cartDto.CartHeader.CartHeaderId);
-                cartFromDb.CouponCode = cartDto.CartHeader?.CouponCode;
+                cartFromDb.CouponCode = cartDto.CartHeader?.CouponCode.ToUpper();
 
                 _db.CartHeaders.Update(cartFromDb);
                 await _db.SaveChangesAsync();

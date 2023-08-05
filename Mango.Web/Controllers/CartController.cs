@@ -2,6 +2,7 @@
 using Mango.Web.Models.Dto;
 using Mango.Web.Service;
 using Mango.Web.Service.IService;
+using Mango.Web.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -54,7 +55,7 @@ namespace Mango.Web.Controllers
                     var domain = $"{Request.Scheme}://{Request.Host.Value}/";
                     StripeRequestDto stripeRequestDto = new()
                     {
-                        ApprovedUrl = $"{domain}cart/confirmation?orderId={orderHeaderDto.OrderHeaderId}",
+                        ApprovedUrl = $"{domain}cart/confirmation?orderHeaderId={orderHeaderDto.OrderHeaderId}",
                         CancelUrl = $"{domain}cart/checkout",
                         OrderHeader = orderHeaderDto,
                     };
@@ -83,13 +84,24 @@ namespace Mango.Web.Controllers
             {
                 TempData["error"] = ex?.Message;
             }
-
+            
             return View(cartDto);
         }
 
-        public async Task<IActionResult> Confirmation(int orderId)
+        public async Task<IActionResult> Confirmation(int orderHeaderId)
         {
-            return View(orderId);
+            ResponseDto? apiResponse = await _orderService.ValidateStripeSession(orderHeaderId);
+
+            if (apiResponse != null && apiResponse.IsSuccess)
+            {
+                OrderHeaderDto orderHeader = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(apiResponse.Result));
+                if (orderHeader.Status == SD.Status_Approved)
+                {
+                    return View(orderHeaderId);
+                }
+            }
+            // redirect to some error page based on status
+            return View(orderHeaderId);
         }
 
         private async Task<CartDto?> LoadCartDtoBasedOnLoggedUser()
