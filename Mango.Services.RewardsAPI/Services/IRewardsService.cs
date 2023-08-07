@@ -4,6 +4,6 @@ namespace Mango.Services.RewardsAPI.Services
 {
     public interface IRewardsService
     {
-        Task UpdateRewards(RewardsMessage rewardsMessage);
+        Task<bool> UpdateRewards(RewardsMessage rewardsMessage);
     }
 }
