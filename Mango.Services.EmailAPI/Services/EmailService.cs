@@ -1,6 +1,7 @@
 ﻿using Mango.Services.EmailAPI.Data;
 using Mango.Services.EmailAPI.Models;
 using Mango.Services.EmailAPI.Models.Dto;
+using Mango.Services.EmailAPI.Utility;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
@@ -10,15 +11,13 @@ namespace Mango.Services.EmailAPI.Services
 {
     public class EmailService : IEmailService
     {
-        private const string MailSender = "appscintra@gmail.com";
-        private const string PasswordMail = "nesfmikribeusoei";
-        private const string SmtpAddress = "smtp.gmail.com";
-        private const int PortNumber = 587;
-
         private DbContextOptions<AppDbContext> _dbOptions;
-        public EmailService(DbContextOptions<AppDbContext> dbOptions)
+        private readonly AppConfig _appConfig;
+
+        public EmailService(DbContextOptions<AppDbContext> dbOptions, AppConfig appConfig)
         {
             this._dbOptions = dbOptions;
+            _appConfig = appConfig;
         }
 
         public async Task EmailCartAndLog(CartDto cartDto)
@@ -47,25 +46,25 @@ namespace Mango.Services.EmailAPI.Services
             string subject = "Uma nova conta foi cadastrada!";
 
             SendEmail(email, subject, message);
-            await LogAndEmail(message, MailSender, subject);
+            await LogAndEmail(message, _appConfig.MailSender, subject);
         }
 
         public void SendEmail(string toAddress, string subject, string body)
         {
             using(MailMessage  mailMessage = new MailMessage())
             {
-                mailMessage.Sender = new MailAddress(MailSender);
-                mailMessage.From = new MailAddress(MailSender);
+                mailMessage.Sender = new MailAddress(_appConfig.MailSender);
+                mailMessage.From = new MailAddress(_appConfig.MailSender);
                 mailMessage.To.Add(new MailAddress(toAddress));
                 mailMessage.Subject = subject;
                 mailMessage.Body = body;
                 mailMessage.IsBodyHtml = true;
 
-                using (SmtpClient smtp = new SmtpClient(SmtpAddress, PortNumber))
+                using (SmtpClient smtp = new SmtpClient(_appConfig.SmtpAddress, _appConfig.PortNumber))
                 {
                     smtp.EnableSsl = true;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(MailSender, PasswordMail);
+                    smtp.Credentials = new NetworkCredential(_appConfig.MailSender, _appConfig.PasswordMail);
 
                     smtp.Send(mailMessage);
                 }
