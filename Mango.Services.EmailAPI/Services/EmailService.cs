@@ -11,7 +11,7 @@ namespace Mango.Services.EmailAPI.Services
     public class EmailService : IEmailService
     {
         private const string MailSender = "appscintra@gmail.com";
-        private const string PasswordMail = "$(educin258852)";
+        private const string PasswordMail = "nesfmikribeusoei";
         private const string SmtpAddress = "smtp.gmail.com";
         private const int PortNumber = 587;
 
