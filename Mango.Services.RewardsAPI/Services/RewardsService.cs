@@ -1,4 +1,5 @@
 ﻿using Mango.Services.RewardsAPI.Message;
+using Mango.Services.RewardsAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
@@ -8,10 +9,6 @@ namespace Mango.Services.RewardsAPI.Services
 {
     public class RewardsService : IRewardsService
     {
-        private const string MailSender = "appscintra@gmail.com";
-        private const string PasswordMail = "nesfmikribeusoei";
-        private const string SmtpAddress = "smtp.gmail.com";
-        private const int PortNumber = 587;
         private DbContextOptions<AppDbContext> _dbOptions;
 
         public RewardsService(DbContextOptions<AppDbContext> dbOptions)
@@ -19,30 +16,27 @@ namespace Mango.Services.RewardsAPI.Services
             this._dbOptions = dbOptions;
         }
 
-        public async Task UpdateRewards(RewardsMessage rewardsMessage)
+        public async Task<bool> UpdateRewards(RewardsMessage rewardsMessage)
         {
-            throw new NotImplementedException();
-        }
-
-        public void SendEmail(string toAddress, string subject, string body)
-        {
-            using(MailMessage  mailMessage = new MailMessage())
+            try
             {
-                mailMessage.Sender = new MailAddress(MailSender);
-                mailMessage.From = new MailAddress(MailSender);
-                mailMessage.To.Add(new MailAddress(toAddress));
-                mailMessage.Subject = subject;
-                mailMessage.Body = body;
-                mailMessage.IsBodyHtml = true;
-
-                using (SmtpClient smtp = new SmtpClient(SmtpAddress, PortNumber))
+                Rewards rewards = new()
                 {
-                    smtp.EnableSsl = true;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(MailSender, PasswordMail);
+                    OrderId = rewardsMessage.OrderId,
+                    RewardsActivity = rewardsMessage.RewardsActivity,
+                    RewardsDate = DateTime.Now,
+                    UserId = rewardsMessage.UserId
+                };
 
-                    smtp.Send(mailMessage);
-                }
+                await using var _db = new AppDbContext(this._dbOptions);
+                await _db.Rewards.AddAsync(rewards);
+                await _db.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

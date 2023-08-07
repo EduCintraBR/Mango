@@ -17,16 +17,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("EmailDBContext"));
 
-builder.Services.AddSingleton(new EmailService(optionBuilder.Options));
-builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-
 var appConfig = new AppConfig();
 builder.Configuration.Bind("AppConfig", appConfig);
 builder.Services.AddSingleton(appConfig);
 
+builder.Services.AddSingleton(new EmailService(optionBuilder.Options, appConfig));
+builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

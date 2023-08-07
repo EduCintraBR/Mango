@@ -14,9 +14,9 @@ namespace Mango.Services.EmailAPI.Messaging
         private readonly string registerUserQueue;
         private readonly ServiceBusProcessor _emailCartProcessor;
         private readonly ServiceBusProcessor _registerUserProcessor;
-        private readonly EmailService _emailService;
+        private readonly IEmailService _emailService;
 
-        public AzureServiceBusConsumer(IConfiguration configuration, EmailService emailService)
+        public AzureServiceBusConsumer(IConfiguration configuration, IEmailService emailService)
         {
             _configuration = configuration;
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
