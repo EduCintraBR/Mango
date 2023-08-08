@@ -1,4 +1,5 @@
 using Mango.Services.RewardsAPI;
+using Mango.Services.RewardsAPI.Extension;
 using Mango.Services.RewardsAPI.Messaging;
 using Mango.Services.RewardsAPI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,6 @@ optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("RewardsDBC
 
 builder.Services.AddSingleton(new RewardsService(optionBuilder.Options));
 builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
-builder.Services.AddScoped<IRewardsService, RewardsService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,12 +24,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "AUTH API");
+    c.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 
@@ -38,6 +38,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 ApplyMigrations();
+
+app.UseAzureServiceBusConsumer();
 
 app.Run();
 

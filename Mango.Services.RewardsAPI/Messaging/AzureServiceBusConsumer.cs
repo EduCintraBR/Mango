@@ -13,15 +13,14 @@ namespace Mango.Services.RewardsAPI.Messaging
         private readonly string orderCreatedTopic;
         private readonly string orderCreatedRewardSubscription;
         private readonly ServiceBusProcessor _rewardProcessor;
-        private readonly IRewardsService _rewardsService;
+        private readonly RewardsService _rewardsService;
 
-        public AzureServiceBusConsumer(IConfiguration configuration, IRewardsService rewardsService)
+        public AzureServiceBusConsumer(IConfiguration configuration, RewardsService rewardsService)
         {
             _configuration = configuration;
             _rewardsService = rewardsService;
 
             serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
-
             orderCreatedTopic = _configuration.GetValue<string>("TopicAndQueueNames:OrderCreated");
             orderCreatedRewardSubscription = _configuration.GetValue<string>("TopicAndQueueNames:OrderCreatedRewardsUpdate");
 
