@@ -1,8 +1,10 @@
 ﻿using Mango.Services.EmailAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Mango.Services.EmailAPI.Controllers
 {
+    [Authorize]
     [Route("api/email")]
     [ApiController]
     public class EmailController : ControllerBase
