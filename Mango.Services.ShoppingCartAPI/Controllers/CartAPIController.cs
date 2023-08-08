@@ -137,7 +137,18 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
 
                         return _response;
                     }
+                    else
+                    {
+                        if(cartDto.CartHeader.CartTotal < coupon.MinAmount)
+                        {
+                            _response.IsSuccess = false;
+                            _response.Message = $"Não é possível aplicar este cupom. O mínimo da compra deve ser {string.Format("{0:c}", coupon.MinAmount)}";
+
+                            return _response;
+                        }
+                    }
                 }
+
                 var cartFromDb = await _db.CartHeaders.FirstAsync(a => a.CartHeaderId == cartDto.CartHeader.CartHeaderId);
                 cartFromDb.CouponCode = cartDto.CartHeader?.CouponCode.ToUpper();
 

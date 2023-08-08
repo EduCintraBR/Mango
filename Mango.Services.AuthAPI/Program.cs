@@ -24,6 +24,7 @@ builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
+builder.Services.AddScoped<SeedWithInitialUser>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -36,7 +37,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "AUTH API");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auth API");
     c.RoutePrefix = string.Empty;
 });
 
@@ -53,12 +54,15 @@ app.Run();
 void ApplyMigrations()
 {
     using (var scope = app.Services.CreateScope())
-    { 
+    {
         var _db = scope.ServiceProvider.GetService<AppDbContext>();
 
         if (_db.Database.GetPendingMigrations().Any())
         {
             _db.Database.Migrate();
+
+            var seedWithInitialUser = scope.ServiceProvider.GetRequiredService<SeedWithInitialUser>();
+            seedWithInitialUser.SeedDataAsync().Wait();
         }
     }
 }
