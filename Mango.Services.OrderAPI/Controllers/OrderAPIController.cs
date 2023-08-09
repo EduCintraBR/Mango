@@ -226,5 +226,42 @@ namespace Mango.Services.OrderAPI.Controllers
 
             return _response;
         }
+
+        [Authorize]
+        [HttpPatch("updateOrderStatus/{orderId:int}")]
+        public async Task<ResponseDto> UpdateOrderStatus(int orderId, [FromBody] string newStatus)
+        {
+            try
+            {
+                OrderHeader orderHeader = await _db.OrderHeaders.FirstAsync(oh => oh.OrderHeaderId == orderId);
+                
+                if (orderHeader is not null)
+                {
+                    if (newStatus.Equals(SD.Status_Cancelled))
+                    {
+                        // Inicia processo de reembolso
+                        var options = new RefundCreateOptions
+                        {
+                            Reason = RefundReasons.RequestedByCustomer,
+                            PaymentIntent = orderHeader.PaymentIntentId
+                        };
+
+                        var service = new RefundService();
+                        Refund refund = await service.CreateAsync(options);
+                    }
+                    orderHeader.Status = newStatus;
+                    await _db.SaveChangesAsync();
+                }
+
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+
+            return _response;
+        }
     }
 }
