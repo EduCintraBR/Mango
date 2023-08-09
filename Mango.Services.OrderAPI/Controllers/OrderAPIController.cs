@@ -39,6 +39,60 @@ namespace Mango.Services.OrderAPI.Controllers
         }
 
         [Authorize]
+        [HttpGet("getOrders")]
+        public ResponseDto? Get(string? userId = "")
+        {
+            try
+            {
+                IEnumerable<OrderHeader> objList;
+                if (User.IsInRole(SD.RoleAdmin))
+                {
+                    objList = _db.OrderHeaders
+                        .Include(d => d.OrderDetails)
+                        .OrderByDescending(d => d.OrderHeaderId)
+                        .ToList();
+                }
+                else
+                {
+                    objList = _db.OrderHeaders
+                        .Include(d => d.OrderDetails)
+                        .Where(order => string.IsNullOrEmpty(userId) || order.UserId.Equals(userId))
+                        .OrderByDescending(d => d.OrderHeaderId)
+                        .ToList();
+                }
+
+                _response.Result = _mapper.Map<IEnumerable<OrderHeaderDto>>(objList);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+
+            return _response;
+        }
+
+        [Authorize]
+        [HttpGet("getOrders/{id:int}")]
+        public ResponseDto? Get(int id)
+        {
+            try
+            {
+                var orderHeader = _db.OrderHeaders
+                    .Include(od => od.OrderDetails)
+                    .FirstOrDefault(od => od.OrderHeaderId == id);
+                _response.Result = _mapper.Map<OrderHeaderDto>(orderHeader);
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+
+            return _response;
+        }
+
+        [Authorize]
         [HttpPost("createOrder")]
         public async Task<ResponseDto> CreateOrder([FromBody] CartDto cartDto)
         {
