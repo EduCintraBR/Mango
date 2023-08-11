@@ -22,7 +22,7 @@ namespace Mango.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             IEnumerable<OrderHeaderDto> list;
             string userId = string.Empty;
@@ -31,7 +31,7 @@ namespace Mango.Web.Controllers
             {
                 userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
             }
-            ResponseDto response = _orderService.GetAllOrder(userId).GetAwaiter().GetResult();
+            ResponseDto response = await _orderService.GetAllOrder(userId);
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<IEnumerable<OrderHeaderDto>>(Convert.ToString(response.Result));
@@ -45,10 +45,10 @@ namespace Mango.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult OrderDetails(int orderId)
+        public async Task<IActionResult> OrderDetails(int orderId)
         {
             OrderHeaderDto orderHeader = new();
-            ResponseDto response = _orderService.GetOrder(orderId).GetAwaiter().GetResult();
+            ResponseDto response = await _orderService.GetOrder(orderId);
             if (response != null && response.IsSuccess)
             {
                 orderHeader = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result));

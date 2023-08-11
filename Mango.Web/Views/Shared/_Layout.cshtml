@@ -26,6 +26,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Página Inicial</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole(SD.RoleCustomer))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Order" asp-action="OrderIndex">Meus Pedidos</a>
+                            </li>
+                        }
                         @if (User.Identity.IsAuthenticated && User.IsInRole(SD.RoleAdmin))
                         {
                             <li class="nav-item dropdown">

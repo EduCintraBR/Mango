@@ -35,10 +35,18 @@ namespace Mango.Web.Service
 
         public async Task<ResponseDto?> GetAllOrder(string? userId)
         {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return await _baseService.SendAsync(new RequestDto
+                {
+                    ApiType = ApiType.GET,
+                    Url = $"{OrderAPIBase}/api/order/getOrders"
+                });
+            }
             return await _baseService.SendAsync(new RequestDto
             {
                 ApiType = ApiType.GET,
-                Url = $"{OrderAPIBase}/api/order/getOrders/{userId}"
+                Url = $"{OrderAPIBase}/api/order/getOrders?userId={userId}"
             });
         }
 

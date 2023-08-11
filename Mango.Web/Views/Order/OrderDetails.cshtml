@@ -1,7 +1,9 @@
 ﻿@model OrderHeaderDto
+@using Mango.Web.Utility
 
 <form method="post">
     <br />
+    <input asp-for="OrderHeaderId" hidden />
     <div class="container">
         <div class="card">
             <div class="card-header bg-dark text-light ml-0">
@@ -41,23 +43,26 @@
                             <div class="row my-1">
                                 <div class="col-3">Data do Pedido</div>
                                 <div class="col-9">
-                                    <input readonly asp-for="OrderTime" class="form-control" />
+                                    <input value="@Model.OrderTime.ToShortDateString()" readonly class="form-control" />
                                 </div>
                             </div>
 
-                            <div class="row my-1">
-                                <div class="col-3">ID da Sessão</div>
-                                <div class="col-9">
-                                    <input disabled readonly asp-for="StripeSessionId" class="form-control" />
+                            @if (User.IsInRole(SD.RoleAdmin))
+                            {
+                                <div class="row my-1">
+                                    <div class="col-3">ID da Sessão</div>
+                                    <div class="col-9">
+                                        <input disabled readonly asp-for="StripeSessionId" class="form-control" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">ID de Pagamento</div>
-                                <div class="col-9">
-                                    <input disabled readonly asp-for="PaymentIntentId" class="form-control" />
+                                <div class="row my-1">
+                                    <div class="col-3">ID de Pagamento</div>
+                                    <div class="col-9">
+                                        <input disabled readonly asp-for="PaymentIntentId" class="form-control" />
+                                    </div>
                                 </div>
-                            </div>
-
+                            }
+                            
                             <div class="row my-1">
                                 <div class="col-3">Status Pagamento</div>
                                 <div class="col-9">
@@ -99,19 +104,28 @@
                                         </div>
                                     </li>
                                 </ul>
-                            @if(Model.Status == "Cancelado")
+                                
+                            @if(User.IsInRole(SD.RoleAdmin))
                             {
-                                <button type="submit" disabled class="btn btn-danger form-control my-1">Cancelar Pedido</button>
+                                @if (Model.Status == SD.Status_Approved)
+                                {
+                                    <button asp-action="OrderReadyForPickup" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-info form-control my-1">Pronto para Coleta</button>
+                                }
+                                else if (Model.Status == SD.Status_ReadyForPickup)
+                                {
+                                    <button asp-action="CompleteOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-success form-control my-1">Concluir Pedido</button>
+                                }
+                                else if (Model.Status == SD.Status_Approved || Model.Status == SD.Status_ReadyForPickup)
+                                {
+                                    <button asp-action="CancelOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-danger form-control my-1">Cancelar Pedido</button>
+                                }
                             }
-                            else if(Model.Status == "Pendente")
+                            else if (User.IsInRole(SD.RoleCustomer))
                             {
-                                <button type="submit" disabled class="btn btn-success form-control my-1">Pronto para Coleta</button>
-                                <button type="submit" disabled class="btn btn-danger form-control my-1">Cancelar Pedido</button>
-                            }
-                            else
-                            {
-                                <button type="submit" class="btn btn-success form-control my-1">Pronto para Coleta</button>
-                                <button type="submit" class="btn btn-danger form-control my-1">Cancelar Pedido</button>
+                                @if(Model.Status == SD.Status_Pending || Model.Status == SD.Status_Approved)
+                                {
+                                    <button asp-action="CancelOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-danger form-control my-1">Cancelar Pedido</button>
+                                }
                             }
                         </div>
                     </div>
