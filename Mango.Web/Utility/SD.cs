@@ -26,5 +26,11 @@
         public const string Status_Completed = "Concluído";
         public const string Status_Refunded = "Reembolsado";
         public const string Status_Cancelled = "Cancelado";
+
+        public enum ContentType
+        {
+            Json,
+            MultipartFormData
+        }
     }
 }

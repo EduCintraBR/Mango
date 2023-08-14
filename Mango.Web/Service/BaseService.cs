@@ -24,7 +24,15 @@ namespace Mango.Web.Service
             {
                 HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
                 HttpRequestMessage message = new();
-                message.Headers.Add("Accept", "application/json");
+
+                if (requestDto.ContentType == ContentType.MultipartFormData)
+                {
+                    message.Headers.Add("Accept", "*/*");
+                }
+                else
+                {
+                    message.Headers.Add("Accept", "application/json");
+                }
 
                 if (withBearer)
                 {
@@ -34,9 +42,29 @@ namespace Mango.Web.Service
 
                 message.RequestUri = new Uri(requestDto.Url);
 
-                if (requestDto.Data != null)
+                if (requestDto.ContentType == ContentType.MultipartFormData)
                 {
-                    message.Content = new StringContent(content: JsonConvert.SerializeObject(requestDto.Data), encoding: Encoding.UTF8, mediaType: "application/json");
+                    var content = new MultipartFormDataContent();
+
+                    foreach (var prop in requestDto.Data.GetType().GetProperties())
+                    {
+                        var value = prop.GetValue(requestDto.Data);
+                        if (value is FormFile)
+                        {
+                            var file = (FormFile)value;
+                            if (file != null)
+                            {
+                                content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.Name);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (requestDto.Data != null)
+                    {
+                        message.Content = new StringContent(content: JsonConvert.SerializeObject(requestDto.Data), encoding: Encoding.UTF8, mediaType: "application/json");
+                    }
                 }
 
                 HttpResponseMessage? apiResponse = null;

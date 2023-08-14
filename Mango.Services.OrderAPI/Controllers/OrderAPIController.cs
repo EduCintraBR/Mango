@@ -237,7 +237,8 @@ namespace Mango.Services.OrderAPI.Controllers
                 
                 if (orderHeader is not null)
                 {
-                    if (newStatus.Equals(SD.Status_Cancelled))
+                    
+                    if (newStatus.Equals(SD.Status_Cancelled) && !orderHeader.Status.Equals(SD.Status_Pending))
                     {
                         // Inicia processo de reembolso
                         var options = new RefundCreateOptions
