@@ -1,7 +1,47 @@
-﻿
+﻿﻿@{
+    var status = Context.Request.Query["status"];
+    var approved = "";
+    var readyforpickup = "";
+    var cancelled = "";
+    var all = "";
+
+    switch (status)
+    {
+        case "approved":
+            approved = "active text-white bg-success";
+            break;
+        case "readyforpickup":
+            readyforpickup = "active text-white bg-info";
+            break;
+        case "cancelled":
+            cancelled = "active text-white bg-danger";
+            break;
+        default:
+            all = "active text-white bg-secondary";
+            break;
+    }
+}
+
+
 <div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <h1 class="text-white px-2">Lista dos pedidos</h1>
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3 d-flex justify-content-between">
+        <div class="row">
+            <h1 class="text-white">Lista de Pedidos</h1>
+        </div>
+        <ul class="list-group list-group-horizontal-sm pt-2">
+            <a style="text-decoration: none" asp-controller="Order" asp-action="OrderIndex" asp-route-status="approved">
+                <li class="list-group-item @approved">Aprovado</li>
+            </a>
+            <a style="text-decoration: none" asp-controller="Order" asp-action="OrderIndex" asp-route-status="readyforpickup">
+                <li class="list-group-item @readyforpickup">Pronto para coleta</li>
+            </a>
+            <a style="text-decoration: none" asp-controller="Order" asp-action="OrderIndex" asp-route-status="cancelled">
+                <li class="list-group-item @cancelled">Cancelado</li>
+            </a>
+            <a style="text-decoration: none" asp-controller="Order" asp-action="OrderIndex" asp-route-status="all">
+                <li class="list-group-item @all">Todos</li>
+            </a>
+        </ul>
     </div>
     <div class="card-body p-4">
         <table id="tblData" class="table table-bordered table-striped pt-3" style="width:100%">
@@ -11,7 +51,7 @@
                     <th>Email</th>
                     <th>Nome</th>
                     <th>Data Pedido</th>
-                    <th>Pagamento</th>
+                    <th>Status Pedido</th>
                     <th>Total</th>
                     <th></th>
                 </tr>

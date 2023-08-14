@@ -111,11 +111,11 @@
                                 {
                                     <button asp-action="OrderReadyForPickup" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-info form-control my-1">Pronto para Coleta</button>
                                 }
-                                else if (Model.Status == SD.Status_ReadyForPickup)
+                                if (Model.Status == SD.Status_ReadyForPickup)
                                 {
                                     <button asp-action="CompleteOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-success form-control my-1">Concluir Pedido</button>
                                 }
-                                else if (Model.Status == SD.Status_Approved || Model.Status == SD.Status_ReadyForPickup)
+                                if (Model.Status == SD.Status_Approved || Model.Status == SD.Status_ReadyForPickup)
                                 {
                                     <button asp-action="CancelOrder" asp-route-orderId="@Model.OrderHeaderId" type="submit" class="btn btn-danger form-control my-1">Cancelar Pedido</button>
                                 }

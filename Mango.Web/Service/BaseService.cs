@@ -52,6 +52,9 @@ namespace Mango.Web.Service
                     case ApiType.DELETE:
                         message.Method = HttpMethod.Delete;
                         break;
+                    case ApiType.PATCH:
+                        message.Method = HttpMethod.Patch;
+                        break;
                     default:
                         message.Method = HttpMethod.Get;
                         break;
