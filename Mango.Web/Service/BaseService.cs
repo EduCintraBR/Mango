@@ -57,7 +57,13 @@ namespace Mango.Web.Service
                                 content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.Name);
                             }
                         }
+                        else
+                        {
+                            content.Add(new StringContent(value == null ? string.Empty : value.ToString()), prop.Name);
+                        }
                     }
+
+                    message.Content = content;
                 }
                 else
                 {
