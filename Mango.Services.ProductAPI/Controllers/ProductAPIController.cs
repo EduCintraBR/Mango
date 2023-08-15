@@ -66,7 +66,7 @@ namespace Mango.Services.ProductAPI.Controllers
 
                 if (productDto.Image != null)
                 {
-                    string fileName = $"{productAdded.ProductId}{Path.GetExtension(productDto.Image.FileName)}";
+                    string fileName = productAdded.ProductId + Path.GetExtension(productDto.Image.FileName);
                     string filePath = $@"wwwroot\ProductImages\{fileName}";
                     var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
 
@@ -76,7 +76,7 @@ namespace Mango.Services.ProductAPI.Controllers
                     }
 
                     var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
-                    productAdded.ImageUrl = $@"{baseUrl}/ProductImages/{filePath}";
+                    productAdded.ImageUrl = $@"{baseUrl}/ProductImages/{fileName}";
                     productAdded.ImageLocalPathUrl = filePath;
                 }
                 else
@@ -125,6 +125,16 @@ namespace Mango.Services.ProductAPI.Controllers
             try
             {
                 var product = _db.Products.First(c => c.ProductId == id);
+
+                if (!string.IsNullOrEmpty(product.ImageLocalPathUrl))
+                {
+                    var oldPathDirectory = Path.Combine(Directory.GetCurrentDirectory(), product.ImageLocalPathUrl);
+                    FileInfo file = new FileInfo(oldPathDirectory);
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+                }
 
                 _db.Products.Remove(product);
                 _db.SaveChanges();

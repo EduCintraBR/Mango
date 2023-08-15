@@ -54,7 +54,7 @@ namespace Mango.Web.Service
                             var file = (FormFile)value;
                             if (file != null)
                             {
-                                content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.Name);
+                                content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
                             }
                         }
                         else
@@ -62,7 +62,6 @@ namespace Mango.Web.Service
                             content.Add(new StringContent(value == null ? string.Empty : value.ToString()), prop.Name);
                         }
                     }
-
                     message.Content = content;
                 }
                 else
