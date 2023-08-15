@@ -7,42 +7,50 @@
         <h1 class="text-white text-center">Criar Produto</h1>
         <hr />
         <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-2">
+                        <label class="control-label pt-2" style="font-size:20px;">Nome</label>
+                    </div>
+                    <div class="col-10 pb-3">
+                        <input disabled asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="col-2">
+                        <label class="control-label pt-2" style="font-size:20px;">Categoria</label>
+                    </div>
+                    <div class="col-10 pb-3">
+                        <input disabled asp-for="CategoryName" class="form-control" />
+                    </div>
+                    <div class="col-2">
+                        <label class="control-label pt-2" style="font-size:20px;">Descrição</label>
+                    </div>
+                    <div class="col-10 pb-3">
+                        <textarea disabled asp-for="Description" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="col-2">
+                        <label class="control-label pt-2" style="font-size:20px;">Url Imagem</label>
+                    </div>
+                    <div class="col-10 pb-3">
+                        <input disabled asp-for="ImageUrl" class="form-control" />
+                    </div>
+                    <div class="col-2">
+                        <label class="control-label pt-2" style="font-size:20px;">Preço</label>
+                    </div>
+                    <div class="col-10 pb-3">
+                        <input disabled asp-for="Price" class="form-control" />
+                    </div>
+                    <div class="col-5 offset-2">
+                        <a asp-action="ProductIndex" class="btn-primary btn form-control ">Voltar para Lista</a>
+                    </div>
+                    <div class="col-5">
+                        <input type="submit" value="Excluir" class="btn btn-danger form-control" />
+                    </div>
+                </div>
+            </div>
             <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Nome</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input disabled asp-for="Name" class="form-control" />
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Categoria</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input disabled asp-for="CategoryName" class="form-control" />
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Descrição</label>
-            </div>
-            <div class="col-10 pb-3">
-                <textarea disabled asp-for="Description" class="form-control" rows="5"></textarea>
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Url Imagem</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input disabled asp-for="ImageUrl" class="form-control" />
-            </div>
-            <div class="col-2">
-                <label class="control-label pt-2" style="font-size:20px;">Preço</label>
-            </div>
-            <div class="col-10 pb-3">
-                <input disabled asp-for="Price" class="form-control" />
-            </div>
-            <div class="col-5 offset-2">
-                <a asp-action="ProductIndex" class="btn-primary btn form-control ">Voltar para Lista</a>
-            </div>
-            <div class="col-5">
-                <input type="submit" value="Excluir" class="btn btn-danger form-control" />
+                <img src="@Model.ImageUrl" class="w-100" alt="" />
             </div>
         </div>
+        
     </div>
 </form>

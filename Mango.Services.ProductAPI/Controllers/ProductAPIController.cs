@@ -66,7 +66,7 @@ namespace Mango.Services.ProductAPI.Controllers
 
                 if (productDto.Image != null)
                 {
-                    string fileName = productAdded.ProductId + Path.GetExtension(productDto.Image.FileName);
+                    string fileName = productAdded.ProductId + Path.GetExtension(productDto.Image.FileName).ToLower();
                     string filePath = $@"wwwroot\ProductImages\{fileName}";
                     var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
 
@@ -100,14 +100,42 @@ namespace Mango.Services.ProductAPI.Controllers
 
         [HttpPut]
         [Authorize(Roles = "ADMIN")]
-        public ResponseDto Put([FromBody] ProductDto productDto)
+        public ResponseDto Put(ProductDto productDto)
         {
             try
             {
-                var productAdded = _db.Products.Update(_mapper.Map<Product>(productDto));
+                Product productAdded = _mapper.Map<Product>(productDto);
+
+                if (productDto.Image != null)
+                {
+                    if (!string.IsNullOrEmpty(productAdded.ImageLocalPathUrl))
+                    {
+                        var oldPathDirectory = Path.Combine(Directory.GetCurrentDirectory(), productAdded.ImageLocalPathUrl);
+                        FileInfo file = new FileInfo(oldPathDirectory);
+                        if (file.Exists)
+                        {
+                            file.Delete();
+                        }
+                    }
+
+                    string fileName = productAdded.ProductId + Path.GetExtension(productDto.Image.FileName).ToLower();
+                    string filePath = $@"wwwroot\ProductImages\{fileName}";
+                    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
+
+                    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
+                    {
+                        productDto.Image.CopyTo(fileStream);
+                    }
+
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
+                    productAdded.ImageUrl = $@"{baseUrl}/ProductImages/{fileName}";
+                    productAdded.ImageLocalPathUrl = filePath;
+                }
+
+                _db.Products.Update(productAdded);
                 _db.SaveChanges();
 
-                _response.Result = _mapper.Map<ProductDto>(productAdded.Entity);
+                _response.Result = _mapper.Map<ProductDto>(productAdded);
             }
             catch (Exception ex)
             {

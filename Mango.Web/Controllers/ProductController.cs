@@ -71,26 +71,29 @@ namespace Mango.Web.Controllers
             {
                 TempData["error"] = response?.Message;
             }
-
+            
             return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProductUpdate(ProductDto dto)
+        public async Task<IActionResult> ProductUpdate(ProductDto productDto)
         {
-            ResponseDto? response = await _productService.UpdateProductAsync(dto);
-
-            if (response != null && response.IsSuccess)
+            if (ModelState.IsValid)
             {
-                TempData["success"] = "Produto alterado com sucesso";
-                return RedirectToAction(nameof(ProductIndex));
-            }
-            else
-            {
-                TempData["error"] = response?.Message;
-            }
+                ResponseDto? response = await _productService.UpdateProductAsync(productDto);
 
-            return RedirectToAction(nameof(ProductIndex));
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Produto alterado com sucesso";
+                    return RedirectToAction(nameof(ProductIndex));
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+            }
+            return View(productDto);
+            //return RedirectToAction(nameof(ProductIndex));
         }
 
         public async Task<IActionResult> ProductDelete(int productId)
