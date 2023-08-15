@@ -9,47 +9,47 @@
     <input asp-for="CartHeader.CartTotal" hidden />
     <div class="border mt-2 p-4 rounded">
         <div class="container row">
-            <div class="col-md-7 col-12">
+            <div class="col-md-7 col-sm-12">
             <span style="font-size:25px;" class="text-warning mb-2">Resumo do Pedido</span>
             </div>
-            <div class="col-md-5 col-12">
-                <a asp-action="CartIndex" class="btn btn-outline-warning form-control">Voltar para o Carrinho</a>
+            <div class="col-md-5 col-sm-12">
+                <a asp-action="CartIndex" class="btn btn-outline-warning form-control"><i class="bi bi-arrow-left"></i> Voltar para o Carrinho</a>
             </div>
             <br /><br /><br />
             <hr/>
-            <div class="col-6">
+            <div class="col-sm-6">
                 <div class="row pt-2">
-                    <div class="col-12 py-2">
+                    <div class="col-sm-12 py-2">
                         <input asp-for="CartHeader.Name" placeholder="Nome..." class="form-control" />
                         <span asp-validation-for="CartHeader.Name" class="text-danger" />
                     </div>
-                    <div class="col-12 py-2">
+                    <div class="col-sm-12 py-2">
                         <input asp-for="CartHeader.Email" placeholder="Email..." class="form-control" />
                         <span asp-validation-for="CartHeader.Email" class="text-danger" />
                     </div>
-                    <div class="col-12 py-2">
+                    <div class="col-sm-12 py-2">
                         <input asp-for="CartHeader.Phone" class="form-control" placeholder="Celular..." />
                         <span asp-validation-for="CartHeader.Phone" class="text-danger" />
                     </div>
-                    <div class="col-12 pt-2">
+                    <div class="col-sm-12 pt-2">
                     <label class="col-form-label">O pedido estará pronto em 30 minutos após o pedido. Se você fizer o pedido quando o restaurante estiver fechado, ele estará pronto no dia seguinte.</label>
                     </div>
                        
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-sm-6">
                 <div class="card mt-2">
                     <div class="card-body">
                         <div class=" d-none d-lg-block">
                             <div class="row text-danger">
-                                <div class="col-6">
+                                <div class="col-sm-6">
                                     Nome do Produto
                                 </div>
 
-                                <div class="col-3">
+                                <div class="col-sm-3">
                                     Preço
                                 </div>
-                                <div class="col-3">
+                                <div class="col-sm-3">
                                     Quantidade
                                 </div>
                             </div>
@@ -58,15 +58,15 @@
                         @foreach (var prods in Model.CartDetails)
                         {
                             <div class="row h-100">
-                                <div class="col-6">
+                                <div class="col-sm-6">
                                     <span style="font-size:20px">@prods.Product.Name</span>
                                 </div>
 
-                                <div class="col-3" style="font-size:11px;">
+                                <div class="col-sm-3" style="font-size:11px;">
                                     <span style="font-size:17px;">@string.Format("{0:c}", prods.Product.Price)</span>
 
                                 </div>
-                                <div class="col-3" style="font-size:11px;">
+                                <div class="col-sm-3" style="font-size:11px;">
                                     <span style="font-size:17px;">@prods.Count</span>
                                 </div>
                             </div>
