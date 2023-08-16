@@ -6,8 +6,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7000
+          "Host": "mangodeliveryproductapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/product",
@@ -18,8 +17,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7000
+          "Host": "mangodeliveryproductapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/product/{id}",
@@ -30,8 +28,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7000
+          "Host": "mangodeliveryproductapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/product/{id}",
@@ -45,8 +42,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7000
+          "Host": "mangodeliveryproductapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/product",
@@ -61,8 +57,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7001
+          "Host": "mangodeliverycouponapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/coupon/GetByCode/{couponCode}",
@@ -76,8 +71,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7001
+          "Host": "mangodeliverycouponapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/coupon",
@@ -91,8 +85,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7001
+          "Host": "mangodeliverycouponapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/coupon/{id}",
@@ -107,8 +100,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/applyCoupon",
@@ -122,8 +114,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/emailCartRequest",
@@ -137,8 +128,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/getCart/{userId}",
@@ -152,8 +142,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/RemoveCart",
@@ -167,8 +156,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/cartUpsert",
@@ -182,8 +170,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/retrieve-products",
@@ -197,8 +184,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/getCouponCode/{couponCode}",
@@ -212,8 +198,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7003
+          "Host": "mangodeliveryshoppingcartapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/cart/removeCoupon",
@@ -228,8 +213,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7004
+          "Host": "mangodeliveryorderapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/order/getOrders",
@@ -243,8 +227,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7004
+          "Host": "mangodeliveryorderapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/order/getOrder/{id}",
@@ -258,8 +241,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7004
+          "Host": "mangodeliveryorderapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/order/createOrder",
@@ -273,8 +255,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7004
+          "Host": "mangodeliveryorderapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/order/createStripeSession",
@@ -288,8 +269,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7004
+          "Host": "mangodeliveryorderapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/order/validateStripeSession",
@@ -303,8 +283,7 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7004
+          "Host": "mangodeliveryorderapi.azurewebsites.net"
         }
       ],
       "UpstreamPathTemplate": "/api/order/updateOrderStatus/{orderId}",
@@ -315,6 +294,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7777"
+    "BaseUrl": "https://mangodeliverygateway.azurewebsites.net"
   }
 }
