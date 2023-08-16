@@ -77,6 +77,7 @@
                         </div>
                         <div class="col-sm-6 text-end">
                             <span class="text-danger" style="font-size:21px;">  Total da compra : @((Model.CartHeader.CartTotal).ToString("c")) <br /></span>
+                            <input asp-for="CartHeader.CartTotal" hidden />
                             @if (Model.CartHeader.Discount > 0)
                             {
                                 <span class="text-success"> Desconto da Compra :  @string.Format("{0:c}", Model.CartHeader.Discount)</span>
