@@ -1,4 +1,5 @@
 ﻿@using Mango.Web.Utility;
+@using System.IdentityModel.Tokens.Jwt;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,12 +27,7 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Página Inicial</a>
                         </li>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole(SD.RoleCustomer))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Order" asp-action="OrderIndex">Meus Pedidos</a>
-                            </li>
-                        }
+                        
                         @if (User.Identity.IsAuthenticated && User.IsInRole(SD.RoleAdmin))
                         {
                             <li class="nav-item dropdown">
@@ -63,16 +59,22 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Olá, @User.Identity.Name</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="CartIndex">
                                     Carrinho
                                     &nbsp;<i class="bi bi-cart-fill"></i>&nbsp;
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Auth" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" asp id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle"></i> @User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Name).Value
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole(SD.RoleCustomer))
+                                    {
+                                        <li> <a class="dropdown-item" asp-area="" asp-controller="Order" asp-action="OrderIndex"><i class="bi bi-bag-check"></i> Meus Pedidos</a> </li>
+                                    }
+                                    <li> <a class="dropdown-item" asp-controller="Auth" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                </ul>
                             </li>
                         }
                     </ul>

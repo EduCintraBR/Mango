@@ -20,3 +20,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card img {
+    height: 396px;
+}
+
+.card-text {
+    height: 100px;
+    overflow: auto;
+}
