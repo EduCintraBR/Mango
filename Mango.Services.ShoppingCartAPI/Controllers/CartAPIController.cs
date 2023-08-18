@@ -211,41 +211,50 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                var cartHeaderFromDb = await _db.CartHeaders.AsNoTracking().FirstOrDefaultAsync(c => c.UserId.Equals(cartDto.CartHeader.UserId));
-                if (cartHeaderFromDb == null)
+                if(cartDto.CartDetails.Any(prod => prod.Count > 0))
                 {
-                    CartHeader cartHeader = _mapper.Map<CartHeader>(cartDto.CartHeader);
-                    await _db.CartHeaders.AddAsync(cartHeader);
-                    await _db.SaveChangesAsync();
-
-                    cartDto.CartDetails.First().CartHeaderId = cartHeader.CartHeaderId;
-                    await _db.CartDetails.AddAsync(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
-                    await _db.SaveChangesAsync();
-                }
-                else
-                {
-                    // check if details has same product
-                    var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
-                        u => u.ProductId == cartDto.CartDetails.First().ProductId &&
-                        u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
-                    if (cartDetailsFromDb == null)
+                    var cartHeaderFromDb = await _db.CartHeaders.AsNoTracking().FirstOrDefaultAsync(c => c.UserId.Equals(cartDto.CartHeader.UserId));
+                    if (cartHeaderFromDb == null)
                     {
-                        cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.CartHeaderId;
+                        CartHeader cartHeader = _mapper.Map<CartHeader>(cartDto.CartHeader);
+                        await _db.CartHeaders.AddAsync(cartHeader);
+                        await _db.SaveChangesAsync();
+
+                        cartDto.CartDetails.First().CartHeaderId = cartHeader.CartHeaderId;
                         await _db.CartDetails.AddAsync(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
                         await _db.SaveChangesAsync();
                     }
                     else
                     {
-                        cartDto.CartDetails.First().CartHeaderId = cartDetailsFromDb.CartHeaderId;
-                        cartDto.CartDetails.First().CartDetailsId = cartDetailsFromDb.CartDetailsId;
-                        cartDto.CartDetails.First().Count += cartDetailsFromDb.Count;
+                        // check if details has same product
+                        var cartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(
+                            u => u.ProductId == cartDto.CartDetails.First().ProductId &&
+                            u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
+                        if (cartDetailsFromDb == null)
+                        {
+                            cartDto.CartDetails.First().CartHeaderId = cartHeaderFromDb.CartHeaderId;
+                            await _db.CartDetails.AddAsync(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
+                            await _db.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            cartDto.CartDetails.First().CartHeaderId = cartDetailsFromDb.CartHeaderId;
+                            cartDto.CartDetails.First().CartDetailsId = cartDetailsFromDb.CartDetailsId;
+                            cartDto.CartDetails.First().Count += cartDetailsFromDb.Count;
 
-                        _db.CartDetails.Update(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
-                        await _db.SaveChangesAsync();
+                            _db.CartDetails.Update(_mapper.Map<CartDetails>(cartDto.CartDetails.First()));
+                            await _db.SaveChangesAsync();
+                        }
                     }
-                }
 
-                _response.Result = cartDto;
+                    _response.Result = cartDto;
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.Message = "Insira um ou mais na quantidade do produto";
+                }
+                
             }
             catch (Exception ex)
             {
