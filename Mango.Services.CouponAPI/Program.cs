@@ -3,10 +3,12 @@ using Mango.Services.CouponAPI;
 using Mango.Services.CouponAPI.Data;
 using Mango.Services.CouponAPI.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Stripe;
+using System.Globalization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
