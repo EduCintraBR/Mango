@@ -1,4 +1,4 @@
-﻿using Mango.MessageBus;
+﻿using Mango.Services.OrderAPI.RabbitMQSender;
 using Mango.Services.OrderAPI.Service;
 using Mango.Services.OrderAPI.Service.IService;
 using Mango.Services.OrderAPI.Utility;
@@ -46,7 +46,8 @@ namespace Mango.Services.OrderAPI.Extensions
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
             builder.Services.AddScoped<IProductService, ProductService>();
-            builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
+            //builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
+            builder.Services.AddScoped<IRabbitMQOrderMessageSender, RabbitMQOrderMessageSender>();
 
             return builder;
         }

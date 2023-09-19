@@ -2,6 +2,7 @@ using Mango.MessageBus;
 using Mango.Services.AuthAPI.Data;
 using Mango.Services.AuthAPI.Extensions;
 using Mango.Services.AuthAPI.Models;
+using Mango.Services.AuthAPI.RabbitMQSender;
 using Mango.Services.AuthAPI.Services;
 using Mango.Services.AuthAPI.Services.IService;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +24,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
+builder.Services.AddScoped<IRabbitMQAuthMessageSender, RabbitMQAuthMessageSender>();
 builder.Services.AddScoped<SeedWithInitialUser>();
 
 builder.Services.AddEndpointsApiExplorer();

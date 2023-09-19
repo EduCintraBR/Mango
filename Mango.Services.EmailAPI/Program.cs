@@ -1,4 +1,3 @@
-
 using Mango.Services.EmailAPI.Data;
 using Mango.Services.EmailAPI.Extension;
 using Mango.Services.EmailAPI.Messaging;
@@ -22,6 +21,9 @@ optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("EmailDBCon
 var appConfig = new AppConfig();
 builder.Configuration.Bind("AppConfig", appConfig);
 builder.Services.AddSingleton(appConfig);
+
+builder.Services.AddHostedService<RabbitMQAuthConsumer>();
+builder.Services.AddHostedService<RabbitMQCartConsumer>();
 
 builder.Services.AddSingleton(new EmailService(optionBuilder.Options, appConfig));
 builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();

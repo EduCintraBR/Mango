@@ -1,14 +1,14 @@
 using AutoMapper;
-using Mango.Services.ShoppingCartAPI.Extensions;
+using Mango.Services.ShoppingCartAPI;
 using Mango.Services.ShoppingCartAPI.Data;
+using Mango.Services.ShoppingCartAPI.Extensions;
+using Mango.Services.ShoppingCartAPI.RabbitMQSender;
+using Mango.Services.ShoppingCartAPI.Service;
+using Mango.Services.ShoppingCartAPI.Service.IService;
+using Mango.Services.ShoppingCartAPI.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using Mango.Services.ShoppingCartAPI;
-using Mango.Services.ShoppingCartAPI.Service.IService;
-using Mango.Services.ShoppingCartAPI.Service;
-using Mango.Services.ShoppingCartAPI.Utility;
-using Mango.MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
-builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
+//builder.Services.AddScoped<IAzureMessageBus, AzureMessageBus>();
+builder.Services.AddScoped<IRabbitMQCartMessageSender, RabbitMQCartMessageSender>();
 
 //Configuring HTTP Client
 builder.Services.AddHttpClient("Product", c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
