@@ -38,41 +38,17 @@ namespace Mango.Services.EmailAPI.Services
             }
             message.Append("</ul>");
 
-            await LogAndEmail(message.ToString(), cartDto.CartHeader.Email, "Seu carrinho de compras salvo");
+            await LogAndEmail(message.ToString(), cartDto.CartHeader.Email);
         }
 
         public async Task RegisterUserEmailAndLog(string email)
         {
             string message = $"Usuário Registrado com Sucesso <br/> Email: {email}";
-            string subject = "Uma nova conta foi cadastrada!";
 
-            SendEmail(email, subject, message);
-            await LogAndEmail(message, _appConfig.MailSender, subject);
+            await LogAndEmail(message, _appConfig.MailSender);
         }
 
-        public void SendEmail(string toAddress, string subject, string body)
-        {
-            using(MailMessage  mailMessage = new MailMessage())
-            {
-                mailMessage.Sender = new MailAddress(_appConfig.MailSender);
-                mailMessage.From = new MailAddress(_appConfig.MailSender);
-                mailMessage.To.Add(new MailAddress(toAddress));
-                mailMessage.Subject = subject;
-                mailMessage.Body = body;
-                mailMessage.IsBodyHtml = true;
-
-                using (SmtpClient smtp = new SmtpClient(_appConfig.SmtpAddress, _appConfig.PortNumber))
-                {
-                    smtp.EnableSsl = true;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(_appConfig.MailSender, _appConfig.PasswordMail);
-
-                    smtp.Send(mailMessage);
-                }
-            }
-        }
-
-        private async Task<bool> LogAndEmail(string message, string email, string? subject)
+        private async Task<bool> LogAndEmail(string message, string email)
         {
             try
             {
@@ -93,7 +69,7 @@ namespace Mango.Services.EmailAPI.Services
         public async Task LogOrderPlaced(RewardsMessage rewardsMessage)
         {
             string message = $"Novo Pedido realizado. <br/> ID do Pedido: {rewardsMessage.OrderId}";
-            await LogAndEmail(message, _appConfig.MailSender, null);
+            await LogAndEmail(message, _appConfig.MailSender);
         }
     }
 }

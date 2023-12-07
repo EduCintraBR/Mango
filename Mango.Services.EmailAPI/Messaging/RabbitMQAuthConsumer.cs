@@ -16,7 +16,7 @@ namespace Mango.Services.EmailAPI.Messaging
         private IConnection _connection;
         private IModel _channel;
         
-        public RabbitMQAuthConsumer(IConfiguration configuration, IEmailService emailService)
+        public RabbitMQAuthConsumer(IConfiguration configuration, EmailService emailService)
         {
             _configuration = configuration;
             _emailService = emailService;
